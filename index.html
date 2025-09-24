@@ -2,16 +2,20 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Lyra Landing</title>
+
+    <!-- Fonts + Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Parisienne&family=Poppins:wght@400;600&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         * {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            box-sizing: border-box
         }
 
         body {
@@ -19,9 +23,115 @@
             background: #fffafc;
             color: #333;
             overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        /* Landing */
+        /* NAVBAR */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: #fff0f5;
+            box-shadow: 0 2px 10px rgba(255, 111, 145, 0.12);
+            z-index: 1100;
+        }
+
+        .brand {
+            font-family: 'Parisienne', cursive;
+            color: #ff6f91;
+            font-size: 1.6rem;
+        }
+
+        .icon-bar {
+            display: flex;
+            gap: 18px;
+            font-size: 1.3rem;
+            color: #ff6f91;
+            align-items: center
+        }
+
+        .icon-bar a,
+        .icon-bar i {
+            cursor: pointer;
+            transition: transform .22s, color .18s
+        }
+
+        .icon-bar a:hover,
+        .icon-bar i:hover {
+            transform: scale(1.18);
+            color: #ff3b6e
+        }
+
+        .icon-bar i {
+            display: inline-block
+        }
+
+        /* Buzzz */
+        @keyframes buzz {
+            0% {
+                transform: translateX(0)
+            }
+
+            25% {
+                transform: translateX(-3px)
+            }
+
+            50% {
+                transform: translateX(3px)
+            }
+
+            75% {
+                transform: translateX(-3px)
+            }
+
+            100% {
+                transform: translateX(0)
+            }
+        }
+
+        /* MELT (used when leaving) */
+        @keyframes meltOut {
+            0% {
+                clip-path: inset(0% 0% 0% 0%);
+                opacity: 1
+            }
+
+            100% {
+                clip-path: inset(100% 0% 0% 0%);
+                opacity: 0
+            }
+        }
+
+        .melt {
+            animation: meltOut 0.95s ease forwards
+        }
+
+        /* Melt-screen (returning to home) */
+        .melt-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: linear-gradient(120deg, #ffe4e1, #fff0f5);
+            z-index: 1200;
+            border-bottom-left-radius: 50% 18%;
+            border-bottom-right-radius: 50% 18%;
+            transition: height .8s cubic-bezier(.2, .95, .2, 1);
+            pointer-events: none;
+        }
+
+        .melt-screen.active {
+            height: 100%;
+            pointer-events: auto
+        }
+
+        /* LAYOUT SECTIONS */
         .landing {
             height: 100vh;
             display: flex;
@@ -31,30 +141,30 @@
             background: linear-gradient(120deg, #ffe4e1, #fff0f5);
             text-align: center;
             position: relative;
+            padding-top: 68px;
         }
 
         .landing h1 {
             font-family: 'Parisienne', cursive;
             font-size: 3rem;
             color: #ff6f91;
-            margin-bottom: 1rem;
+            margin-bottom: .6rem
         }
 
         .landing p {
-            font-size: 1.2rem;
+            font-size: 1.12rem;
             color: #555;
-            margin-bottom: 2rem;
-            max-width: 500px;
+            max-width: 600px;
+            margin: 0 auto 1.6rem
         }
 
-        /* Scroll down arrow */
         .scroll-down {
             position: absolute;
             bottom: 20px;
             font-size: 2rem;
             color: #ff6f91;
             cursor: pointer;
-            animation: bounce 2s infinite;
+            animation: bounce 2s infinite
         }
 
         @keyframes bounce {
@@ -64,53 +174,51 @@
             50%,
             80%,
             100% {
-                transform: translateY(0);
+                transform: translateY(0)
             }
 
             40% {
-                transform: translateY(-10px);
+                transform: translateY(-10px)
             }
 
             60% {
-                transform: translateY(-5px);
+                transform: translateY(-5px)
             }
         }
 
-        /* Gallery */
         .gallery {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             padding: 60px 20px;
             max-width: 1200px;
-            margin: 0 auto;
+            margin: 0 auto
         }
 
         .gallery img {
             width: 100%;
             border-radius: 20px;
             object-fit: cover;
-            transition: transform 0.3s, box-shadow 0.3s;
-            cursor: pointer;
+            transition: transform .28s, box-shadow .28s;
+            cursor: pointer
         }
 
         .gallery img:hover {
             transform: scale(1.05);
-            box-shadow: 0 15px 25px rgba(255, 111, 145, 0.3);
+            box-shadow: 0 15px 25px rgba(255, 111, 145, 0.22)
         }
 
-        /* About section */
         .about {
-            height: 100vh;
+            height: 70vh;
             display: flex;
             align-items: center;
             justify-content: center;
             background: #fff0f5;
-            font-size: 2rem;
-            color: #ff6f91;
+            font-size: 1.6rem;
+            color: #ff6f91
         }
 
-        /* Spinning vinyl */
+        /* Vinyl + music popup (keeps your vibe) */
         .vinyl {
             width: 110px;
             height: 110px;
@@ -120,140 +228,310 @@
             bottom: 30px;
             right: 30px;
             animation: spin 4s linear infinite;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .18);
             cursor: pointer;
-            z-index: 1000;
+            z-index: 1000
         }
 
         @keyframes spin {
             from {
-                transform: rotate(0deg);
+                transform: rotate(0deg)
             }
 
             to {
-                transform: rotate(360deg);
+                transform: rotate(360deg)
             }
         }
 
-        /* Music popup */
         .music-popup {
             position: fixed;
-            bottom: 120px;
+            bottom: 150px;
             right: 40px;
-            width: 220px;
-            padding: 15px;
+            width: 240px;
+            padding: 14px;
             background: #fff0f5;
             border: 2px solid #ff6f91;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(255, 111, 145, 0.3);
+            border-radius: 18px;
+            box-shadow: 0 10px 20px rgba(255, 111, 145, 0.18);
             display: flex;
             flex-direction: column;
             align-items: center;
             opacity: 0;
-            transform: scale(0.5);
-            transition: transform 0.4s ease-out, opacity 0.4s ease-out;
-            font-size: 0.9rem;
-            text-align: center;
-            z-index: 999;
+            transform: scale(.6);
+            transition: transform .35s ease, opacity .35s ease;
+            z-index: 1100
         }
 
         .music-popup.active {
             opacity: 1;
-            transform: scale(1);
-            animation: pop 0.3s ease-out;
-        }
-
-        @keyframes pop {
-            0% {
-                transform: scale(0.5);
-                opacity: 0;
-            }
-
-            80% {
-                transform: scale(1.2);
-                opacity: 1;
-            }
-
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
+            transform: scale(1)
         }
 
         .music-popup button {
             margin-top: 10px;
-            padding: 5px 10px;
+            padding: 6px 12px;
             background: #ff6f91;
-            color: white;
+            color: #fff;
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
+            cursor: pointer
+        }
+
+        .music-popup p {
+            font-size: .95rem
+        }
+
+        /* SIGNIN */
+        .signin-page {
+            display: none;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(120deg, #fffafc, #fff0f5);
+            padding-top: 68px;
+        }
+
+        .signin-box {
+            background: #fff;
+            padding: 28px;
+            border-radius: 18px;
+            box-shadow: 0 12px 30px rgba(255, 111, 145, 0.12);
+            width: 320px;
+            max-width: 92%
+        }
+
+        .signin-box h2 {
+            color: #ff6f91;
+            margin-bottom: 14px;
+            font-size: 1.4rem
+        }
+
+        .signin-box input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 9px;
+            border: 1px solid #eee;
+            outline: none
+        }
+
+        .signin-box button {
+            margin-top: 10px;
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            background: #ff6f91;
+            color: #fff;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: transform .18s
         }
 
-        .music-popup button:hover {
-            transform: scale(1.1);
+        .signin-box button:hover {
+            transform: scale(1.03)
         }
 
-        .music-popup iframe {
-            border-radius: 12px;
+        /* small screens tweak */
+        @media (max-width:520px) {
+            .landing h1 {
+                font-size: 2.5rem
+            }
+
+            .icon-bar {
+                gap: 12px
+            }
+
+            .vinyl {
+                width: 88px;
+                height: 88px
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Landing -->
-    <section class="landing">
-        <h1>Lyra</h1>
-        <p>Welcome to Lyra — a little corner of joy, pastel dreams, and happy vibes. Explore, scroll, and get
-            inspired as colors, music, and cuteness swirl together!</p>
+    <!-- NAV -->
+    <div class="navbar">
+        <div class="brand">Lyra</div>
+        <div class="icon-bar" role="navigation" aria-label="site controls">
+            <i class="fas fa-home" id="homeIcon" title="Home" aria-hidden="true"></i>
+            <a href="https://open.spotify.com" target="_blank" rel="noopener" title="Open Spotify"><i
+                    class="fab fa-spotify" aria-hidden="true"></i></a>
+            <i class="fas fa-bell" id="notifyIcon" title="Enable Notifications" aria-hidden="true"></i>
+            <i class="fas fa-user" id="signinIcon" title="Sign In" aria-hidden="true"></i>
+        </div>
+    </div>
 
+    <!-- LANDING -->
+    <section class="landing" id="homeSection">
+        <h1>Lyra</h1>
+        <p>Welcome to Lyra — a little corner of joy, pastel dreams, and happy vibes. Explore, scroll, and get inspired
+            as colors, music, and cuteness swirl together!</p>
         <div class="scroll-down" onclick="document.querySelector('.gallery').scrollIntoView({behavior:'smooth'})">
             &#8595;</div>
 
-        <div class="vinyl" id="vinyl"></div>
-
-        <!-- Music popup -->
+        <div class="vinyl" id="vinyl" title="Open music"></div>
         <div class="music-popup" id="musicPopup">
-            <p>🍹 Pop in some pastel beats! 🎵</p>
-            <iframe width="210" height="60"
-                src="c:\Users\us\Downloads\red_daylight_mashup.mp3.mp3"
-                title="Audio player" frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen></iframe>
-            <button id="closeMusic">Close</button>
+            <p>🍹 Pop in some pastel beats!</p>
+            <!-- If you want local audio playback, upload file to repo and use <audio>. For now we keep Spotify link via icon -->
+            <a href="https://open.spotify.com" target="_blank" rel="noopener"><button>Open Spotify</button></a>
         </div>
     </section>
 
-    <!-- Gallery -->
-    <section class="gallery">
+    <!-- GALLERY -->
+    <section class="gallery" id="gallerySection">
         <img src="https://i.pinimg.com/736x/20/e5/3b/20e53b47c71b83b893e073c61407239e.jpg" alt="Pic 1">
         <img src="https://i.pinimg.com/736x/9d/1a/a0/9d1aa07dd03fd8f2cbf197a35dca466c.jpg" alt="Pic 2">
         <img src="https://i.pinimg.com/1200x/f0/45/59/f04559d7e5bb378a63c1169bb0e7a866.jpg" alt="Pic 3">
         <img src="https://i.pinimg.com/736x/97/9c/3b/979c3b87077f3de1d4ba3267ccf3c71f.jpg" alt="Pic 4">
     </section>
 
-    <!-- About -->
-    <section class="about">
+    <!-- ABOUT -->
+    <section class="about" id="aboutSection">
         Scrolled down! Add your content here 🖤
     </section>
 
+    <!-- SIGNIN -->
+    <section class="signin-page" id="signinPage" aria-hidden="true">
+        <div class="signin-box" role="form" aria-label="Sign in form">
+            <h2>Sign In</h2>
+            <input type="email" id="email" placeholder="Email" autocomplete="email">
+            <input type="password" id="password" placeholder="Password" autocomplete="current-password">
+            <button id="signinBtn">Sign In</button>
+            <p style="font-size:.85rem;color:#666;margin-top:8px">Not real-auth — this is front-end only for now.</p>
+        </div>
+    </section>
+
+    <!-- Melt screen (for returning to home) -->
+    <div class="melt-screen" id="meltScreen" aria-hidden="true"></div>
+
     <script>
-        const vinyl = document.getElementById('vinyl');
-        const musicPopup = document.getElementById('musicPopup');
-        const closeBtn = document.getElementById('closeMusic');
+        document.addEventListener('DOMContentLoaded', () => {
+            const notifyIcon = document.getElementById('notifyIcon');
+            const signinIcon = document.getElementById('signinIcon');
+            const homeIcon = document.getElementById('homeIcon');
+            const signinPage = document.getElementById('signinPage');
+            const landing = document.getElementById('homeSection');
+            const gallery = document.getElementById('gallerySection');
+            const about = document.getElementById('aboutSection');
+            const mainSections = [landing, gallery, about];
+            const meltScreen = document.getElementById('meltScreen');
+            const vinyl = document.getElementById('vinyl');
+            const musicPopup = document.getElementById('musicPopup');
 
-        vinyl.addEventListener('click', () => {
-            musicPopup.classList.toggle('active');
-        });
+            // VINYL toggles music popup
+            vinyl.addEventListener('click', () => musicPopup.classList.toggle('active'));
 
-        closeBtn.addEventListener('click', () => {
-            musicPopup.classList.remove('active');
-        });
+            // Notification icon: buzz + request permission (HTTPS required; GitHub Pages ok)
+            notifyIcon.addEventListener('click', () => {
+                notifyIcon.style.animation = 'buzz .6s';
+                setTimeout(() => notifyIcon.style.animation = '', 650);
+
+                if ('Notification' in window) {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === 'granted') {
+                            try {
+                                new Notification('Lyra', { body: 'Notifications enabled ✨' });
+                            } catch (e) {
+                                alert('Notifications enabled (but failed to show a preview).');
+                            }
+                        } else if (permission === 'denied') {
+                            alert('Notifications were blocked. You can enable them via your browser settings.');
+                        } else {
+                            alert('Notification permission dismissed.');
+                        }
+                    }).catch(() => alert('Could not request notification permission.'));
+                } else {
+                    alert('Notifications not supported in this browser.');
+                }
+            });
+
+            // SIGN-IN: melt main sections out, then show sign-in
+            signinIcon.addEventListener('click', () => {
+                // add melt animation to visible main sections
+                mainSections.forEach(sec => {
+                    // only animate if currently visible
+                    if (getComputedStyle(sec).display !== 'none') sec.classList.add('melt');
+                });
+
+                // after melt animation ends -> hide mains and reveal sign-in
+                setTimeout(() => {
+                    mainSections.forEach(sec => {
+                        sec.style.display = 'none';
+                        sec.classList.remove('melt'); // reset for next time
+                    });
+                    signinPage.style.display = 'flex';
+                    signinPage.setAttribute('aria-hidden', 'false');
+                    // allow tiny delay then focus email for nice UX
+                    setTimeout(() => document.getElementById('email').focus(), 140);
+                    // scroll top to ensure sign-in is visible
+                    window.scrollTo({ top: 0, behavior: 'instant' });
+                }, 950); // matches melt animation duration
+            });
+
+            // HOME: melt-screen down, restore mains, then melt-screen up
+            homeIcon.addEventListener('click', () => {
+                // if already on home and visible, just scroll to top smoothly
+                const landingVisible = getComputedStyle(landing).display !== 'none';
+                if (landingVisible) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    return;
+                }
+
+                // begin melt-screen cover
+                meltScreen.classList.add('active');
+
+                // hide sign-in immediately
+                signinPage.style.display = 'none';
+                signinPage.setAttribute('aria-hidden', 'true');
+
+                // after a short delay (while covered) restore sections behind it
+                setTimeout(() => {
+                    landing.style.display = 'flex';
+                    gallery.style.display = 'grid';
+                    about.style.display = 'flex';
+                    // ensure sections are reset to normal state
+                    mainSections.forEach(sec => sec.classList.remove('melt'));
+                    // jump to top instantly (content is covered by melt-screen)
+                    window.scrollTo({ top: 0, behavior: 'instant' });
+                }, 250); // small delay so the cover starts animating
+
+                // remove the cover after the full cover animation to reveal content
+                setTimeout(() => {
+                    meltScreen.classList.remove('active');
+                }, 1000); // slightly longer than .melt-screen transition (0.8s) for smoothness
+            });
+
+            // simple front-end sign-in button (demo)
+            document.getElementById('signinBtn').addEventListener('click', () => {
+                const e = document.getElementById('email').value.trim();
+                const p = document.getElementById('password').value;
+                if (!e || !p) {
+                    alert('Please enter both email and password (this is just UI-only demo).');
+                    return;
+                }
+                // small flourish: show melt-screen then return to home
+                meltScreen.classList.add('active');
+                setTimeout(() => {
+                    signinPage.style.display = 'none';
+                    landing.style.display = 'flex';
+                    gallery.style.display = 'grid';
+                    about.style.display = 'flex';
+                    window.scrollTo({ top: 0, behavior: 'instant' });
+                }, 350);
+                setTimeout(() => meltScreen.classList.remove('active'), 1000);
+            });
+
+            // Accessibility: pressing Escape will return to home if on sign-in
+            document.addEventListener('keydown', (ev) => {
+                if (ev.key === 'Escape' && getComputedStyle(signinPage).display !== 'none') {
+                    homeIcon.click();
+                }
+            });
+
+        }); // DOMContentLoaded
     </script>
-
 </body>
-
 
 </html>
